@@ -36,7 +36,7 @@ export const FAB = ({ style, iconName, onPress }: Props) => {
           alignItems: 'center',
           justifyContent: 'center',
         },
-        style,
+        // style,
       ]}
       onPress={onPress}
     >

@@ -1,4 +1,4 @@
-import { ActivityIndicator, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { useProducts } from '@/presentation/products/hooks/useProducts';
 import ProductList from '@/presentation/products/components/ProductList';
 import { FAB } from '@/presentation/theme/components/FAB';
@@ -16,7 +16,7 @@ const HomeScreen = () => {
   }
 
   return (
-    <View style={{ paddingHorizontal: 10 }}>
+    <View style={{ paddingHorizontal: 10, ...StyleSheet.absoluteFillObject }}>
       <ProductList
         products={productsQuery.data?.pages.flatMap((page) => page) ?? []}
         loadNextPage={loadNextPage}
