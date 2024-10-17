@@ -22,7 +22,7 @@ const ProductScreen = () => {
   const { id } = useLocalSearchParams();
   const navigation = useNavigation();
 
-  const { productQuery } = useProduct(`${id}`);
+  const { productQuery, productMutation } = useProduct(`${id}`);
 
   useEffect(() => {
     navigation.setOptions({
@@ -53,10 +53,7 @@ const ProductScreen = () => {
   const product = productQuery.data!;
 
   return (
-    <Formik
-      initialValues={product}
-      onSubmit={(productLike) => console.log({ productLike })}
-    >
+    <Formik initialValues={product} onSubmit={productMutation.mutate}>
       {({ values, handleSubmit, handleChange, setFieldValue }) => (
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : undefined}
@@ -148,10 +145,7 @@ const ProductScreen = () => {
                 marginTop: 20,
               }}
             >
-              <ThemedButton
-                icon="save-outline"
-                onPress={() => console.log('guardar')}
-              >
+              <ThemedButton icon="save-outline" onPress={() => handleSubmit()}>
                 Guardar
               </ThemedButton>
             </View>
