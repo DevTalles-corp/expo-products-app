@@ -5,22 +5,47 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   Platform,
+  ActivityIndicator,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from 'expo-router';
+import { Redirect, useLocalSearchParams, useNavigation } from 'expo-router';
 import { ThemedView } from '@/presentation/theme/components/ThemedView';
 import ThemedTextInput from '@/presentation/theme/components/ThemedTextInput';
+import { useProduct } from '@/presentation/products/hooks/useProduct';
 
 const ProductScreen = () => {
+  const { id } = useLocalSearchParams();
   const navigation = useNavigation();
 
-  useEffect(() => {
-    // TODO: colocar el nombre del producto
+  const { productQuery } = useProduct(`${id}`);
 
+  useEffect(() => {
     navigation.setOptions({
       headerRight: () => <Ionicons name="camera-outline" size={25} />,
     });
   }, []);
+
+  useEffect(() => {
+    if (productQuery.data) {
+      navigation.setOptions({
+        title: productQuery.data.title,
+      });
+    }
+  }, [productQuery.data]);
+
+  if (productQuery.isLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size={30} />
+      </View>
+    );
+  }
+
+  if (!productQuery.data) {
+    return <Redirect href="/(products-app)/(home)" />;
+  }
+
+  const product = productQuery.data!;
 
   return (
     <KeyboardAvoidingView
