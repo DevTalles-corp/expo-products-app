@@ -1,6 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
-import { StyleProp, ViewStyle } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { StyleProp, ViewStyle, TouchableOpacity } from 'react-native';
 
 interface Props {
   iconName: keyof typeof Ionicons.glyphMap;
@@ -36,7 +35,7 @@ export const FAB = ({ style, iconName, onPress }: Props) => {
           alignItems: 'center',
           justifyContent: 'center',
         },
-        // style,
+        style,
       ]}
       onPress={onPress}
     >
