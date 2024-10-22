@@ -17,8 +17,11 @@ import { useThemeColor } from '@/presentation/theme/hooks/useThemeColor';
 
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import * as MediaLibrary from 'expo-media-library';
+import { useCameraStore } from '@/presentation/store/useCameraStore';
 
 export default function CameraScreen() {
+  const { addSelectedImage } = useCameraStore();
+
   const [facing, setFacing] = useState<CameraType>('back');
   const [cameraPermission, requestCameraPermission] = useCameraPermissions();
   const [mediaPermission, requestMediaPermission] =
@@ -108,7 +111,7 @@ export default function CameraScreen() {
 
     await MediaLibrary.createAssetAsync(selectedImage);
 
-    // TODO: implementar función
+    addSelectedImage(selectedImage);
 
     router.dismiss();
   };

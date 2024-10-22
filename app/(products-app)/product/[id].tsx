@@ -21,12 +21,21 @@ import ThemedButton from '@/presentation/theme/components/ThemedButton';
 import { Formik } from 'formik';
 import { Size } from '@/core/products/interfaces/product.interface';
 import MenuIconButton from '@/presentation/theme/components/MenuIconButton';
+import { useCameraStore } from '@/presentation/store/useCameraStore';
 
 const ProductScreen = () => {
+  const { selectedImages, clearImages } = useCameraStore();
+
   const { id } = useLocalSearchParams();
   const navigation = useNavigation();
 
   const { productQuery, productMutation } = useProduct(`${id}`);
+
+  useEffect(() => {
+    return () => {
+      clearImages();
+    };
+  }, []);
 
   useEffect(() => {
     navigation.setOptions({
@@ -68,7 +77,7 @@ const ProductScreen = () => {
           behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         >
           <ScrollView>
-            <ProductImages images={values.images} />
+            <ProductImages images={[...product.images, ...selectedImages]} />
 
             <ThemedView style={{ marginHorizontal: 10, marginTop: 20 }}>
               <ThemedTextInput
