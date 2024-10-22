@@ -1,9 +1,10 @@
 import { ThemedText } from '@/presentation/theme/components/ThemedText';
 import { useThemeColor } from '@/presentation/theme/hooks/useThemeColor';
+import { Ionicons } from '@expo/vector-icons';
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
+import { router } from 'expo-router';
 import { useRef, useState } from 'react';
 import {
-  Button,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -58,6 +59,12 @@ export default function CameraScreen() {
     // TODO: guardar imagen
   };
 
+  const onReturnCancel = () => {
+    // TODO: limpiar estado
+
+    router.dismiss();
+  };
+
   function toggleCameraFacing() {
     setFacing((current) => (current === 'back' ? 'front' : 'back'));
   }
@@ -66,6 +73,13 @@ export default function CameraScreen() {
     <View style={styles.container}>
       <CameraView ref={cameraRef} style={styles.camera} facing={facing}>
         <ShutterButton onPress={onShutterButtonPress} />
+
+        <FlipCameraButton onPress={toggleCameraFacing} />
+
+        {/* TODO:  GalleryButton */}
+        <GalleryButton />
+
+        <ReturnCancelButton onPress={onReturnCancel} />
 
         {/* <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
             <Text style={styles.text}>Flip Camera</Text>
@@ -93,6 +107,29 @@ const ShutterButton = ({ onPress = () => {} }) => {
         },
       ]}
     ></TouchableOpacity>
+  );
+};
+
+const FlipCameraButton = ({ onPress = () => {} }) => {
+  return (
+    <TouchableOpacity onPress={onPress} style={styles.flipCameraButton}>
+      <Ionicons name="camera-reverse-outline" size={30} color="white" />
+    </TouchableOpacity>
+  );
+};
+const GalleryButton = ({ onPress = () => {} }) => {
+  return (
+    <TouchableOpacity onPress={onPress} style={styles.galleryButton}>
+      <Ionicons name="images-outline" size={30} color="white" />
+    </TouchableOpacity>
+  );
+};
+
+const ReturnCancelButton = ({ onPress = () => {} }) => {
+  return (
+    <TouchableOpacity onPress={onPress} style={styles.returnCancelButton}>
+      <Ionicons name="arrow-back-outline" size={30} color="white" />
+    </TouchableOpacity>
   );
 };
 
